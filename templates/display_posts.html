@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .post-content {
+            padding: 15px;
+        }
+        .post-header {
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+        .dropdown-menu {
+            min-width: 100px;
+        }
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: .375rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% for post in posts %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center post-header">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ post.user.profile_picture.url }}" alt="{{ post.user.username }}" class="rounded-circle" width="40" height="40">
+                            <div class="ms-3">
+                                <h6 class="mb-0">{{ post.user.username }}</h6>
+                                <small class="text-muted">{{ post.created_at|date:"F j, Y, g:i a" }}</small>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                        
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a href="{% url 'report_post' post.id %}" class="dropdown-item">Report Post</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body post-content">
+                        {% if post.content_text %}
+                            <p class="card-text">{{ post.content_text }}</p>
+                        {% endif %}
+                        {% if post.content_image %}
+                            <img src="{{ post.content_image.url }}" alt="Post Image" class="img-fluid rounded mb-3">
+                        {% endif %}
+                        {% if post.content_video %}
+                            <div class="ratio ratio-16x9 mb-3">
+                                <video controls>
+                                    <source src="{{ post.content_video.url }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle (including Popper) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

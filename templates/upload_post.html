@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Post</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-control {
+            border-radius: .25rem;
+        }
+        .btn-custom {
+            background-color: #1877f2;
+            color: #fff;
+            border-radius: .25rem;
+        }
+        .btn-custom:hover {
+            background-color: #165eab;
+        }
+        .card-header {
+            background-color: #f1f2f6;
+            border-bottom: 1px solid #e1e4e8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-5 form-container">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">What's on your mind?</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-custom">Post</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle (including Popper) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

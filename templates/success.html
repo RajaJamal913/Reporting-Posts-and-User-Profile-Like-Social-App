@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .report-card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .report-card .card-body {
+            padding: 20px;
+        }
+        .report-card .card-footer {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .report-card .btn {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">Reports</h2>
+        <p class="text-center">Your report has been successfully submitted. Below are the current reports:</p>
+        
+        {% if reports %}
+            <div class="row">
+                {% for report in reports %}
+                    <div class="col-md-6">
+                        <div class="card report-card">
+                            <div class="card-body">
+                                {% if report.post %}
+                                    <!-- Display post report details -->
+                                    <h5 class="card-title">Reported Post ID: {{ report.post.id }}</h5>
+                                    <p class="card-text"><strong>Reported By:</strong> {{ report.user.username }}</p>
+                                    <p class="card-text"><strong>Reason:</strong> {{ report.reason }}</p>
+                                    <p class="card-text"><strong>Post Created By:</strong> {{ report.post.user.username }}</p>
+                                    
+                                    {% if report.post.content_text %}
+                                        <p>{{ report.post.content_text }}</p>
+                                    {% endif %}
+                                    {% if report.post.content_image %}
+                                        <img src="{{ report.post.content_image.url }}" alt="Post Image" class="img-fluid rounded">
+                                    {% endif %}
+                                    {% if report.post.content_video %}
+                                        <video controls class="w-100 mt-2">
+                                            <source src="{{ report.post.content_video.url }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    {% endif %}
+                                {% elif report.user_profile %}
+                                    <!-- Display user profile report details -->
+                                    <h5 class="card-title">Reported User Profile ID: {{ report.user_profile.id }}</h5>
+                                    <p class="card-text"><strong>Reported By:</strong> {{ report.user.username }}</p>
+                                    <p class="card-text"><strong>Reason:</strong> {{ report.reason }}</p>
+                                    <p class="card-text"><strong>User Profile Name:</strong> {{ report.user_profile.user.username }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="card-footer d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Reported on {{ report.created_at|date:"F j, Y, g:i a" }}</small>
+                                <div>
+                                    {% if report.post %}
+                                        <a href="{% url 'accept_report' report.id  %}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check"></i> Accept
+                                        </a>
+                                        <a href="{% url 'reject_report' report.id  %}" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-times"></i> Reject
+                                        </a>
+                                    {% elif report.user_profile %}
+                                        <a href="{% url 'accept_user_profile_report' report.id %}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check"></i> Accept
+                                        </a>
+                                        <a href="{% url 'reject_user_profile_report' report.id %}" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-times"></i> Reject
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">No reports available.</p>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h2>Report User Profile</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>You are reporting the profile of <strong>{{ user_profile.user.username }}</strong>.</p>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="reason" class="form-label">Reason for Reporting:</label>
+                                <textarea id="reason" name="reason" class="form-control" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Submit Report</button>
+                            <a href="{% url 'view_profile' user_profile.user.id %}" class="btn btn-secondary">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

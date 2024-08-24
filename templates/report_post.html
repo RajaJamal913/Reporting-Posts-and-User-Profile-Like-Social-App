@@ -1,0 +1,93 @@
+<!-- reports/templates/reports/report_post.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Post</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        .dropdown-toggle {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+        #reportReason {
+            resize: none;
+        }
+        #charCount {
+            display: block;
+            margin-top: 5px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Post Item -->
+        <div class="post-item">
+            <p>This is a sample post content...</p>
+            <!-- Three Dots Menu -->
+            <div class="dropdown">
+                <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    &#x22EE; <!-- Three Vertical Dots -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#reportModal" data-post-id="{{ post_id }}">Report Post</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Report Modal -->
+        <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reportModalLabel">Report Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="reportForm" method="post" action="{% url 'report_post' post_id=post_id %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="reportReason" class="form-label">Reason for Reporting</label>
+                                <textarea id="reportReason" name="reason" class="form-control" rows="4" maxlength="300" required></textarea>
+                                <small id="charCount" class="form-text text-muted">0/300 characters</small>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Report</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const reportReason = document.getElementById('reportReason');
+            const charCount = document.getElementById('charCount');
+            const reportForm = document.getElementById('reportForm');
+
+            reportReason.addEventListener('input', function() {
+                const currentLength = reportReason.value.length;
+                charCount.textContent = `${currentLength}/300 characters`;
+            });
+
+            reportForm.addEventListener('submit', function(event) {
+                const reasonText = reportReason.value;
+
+                // Simple link detection
+                const linkPattern = /(http:\/\/|https:\/\/|www\.)/i;
+                if (linkPattern.test(reasonText)) {
+                    alert('Links are not allowed in the report reason.');
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

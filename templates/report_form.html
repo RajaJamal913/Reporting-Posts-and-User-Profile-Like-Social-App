@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report Post</title>
+</head>
+<body>
+    <h1>Report Post</h1>
+    <form method="post" action="{% url 'report_post' post_id=post.id %}">
+        {% csrf_token %}
+        <textarea name="reason" maxlength="300" placeholder="Why are you reporting this post?"></textarea>
+        <button type="submit">Submit Report</button>
+    </form>
+</body>
+</html>

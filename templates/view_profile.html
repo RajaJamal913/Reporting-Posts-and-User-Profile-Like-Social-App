@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .report-btn {
+            margin-top: 10px;
+            display: inline-block;
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .report-btn:hover {
+            background-color: #c82333;
+        }
+        .card-body {
+            position: relative;
+            padding-bottom: 50px; /* Ensure space for the button */
+        }
+        .report-btn-wrapper {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>All User Profiles</h2>
+        <div class="row">
+            {% for profile in profiles %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>{{ profile.user.username }}'s Profile</h4>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Full Name:</strong> {{ profile.full_name }}</p>
+                        <p><strong>Age:</strong> {{ profile.age }}</p>
+                        <p><strong>Bio:</strong> {{ profile.bio }}</p>
+                        <p><strong>Location:</strong> {{ profile.location }}</p>
+                        {% if profile.profile_picture %}
+                        <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="img-fluid" style="max-width: 150px;">
+                        {% else %}
+                        <p>No profile picture uploaded.</p>
+                        {% endif %}
+                        <div class="report-btn-wrapper">
+                            <a href="{% url 'report_user_profile' profile.id %}" class="report-btn">Report Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
